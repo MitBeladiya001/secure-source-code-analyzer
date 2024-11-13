@@ -25,7 +25,7 @@ A Python-based security scanner for analyzing open-source repositories, designed
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/<your-username>/secure-code-scanner.git
+    git clone https://github.com/bvvard/secure-source-code-analyzer.git
     cd secure-code-scanner
     ```
 
@@ -39,4 +39,4 @@ A Python-based security scanner for analyzing open-source repositories, designed
 To scan a GitHub repository:
 
 ```bash
-python scanner.py --repo https://github.com/bvvard/secure-source-code-analyzer/
+python scanner.py --repo https://github.com/<username>/<repo>
