@@ -1,0 +1,5 @@
+GitPython
+bandit
+click
+requests
+pyyaml

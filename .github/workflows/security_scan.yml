@@ -1,0 +1,15 @@
+name: Security Scan
+
+on: [push, pull_request]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run Secure Code Scanner
+        run: |
+          python scanner.py --repo "${{ github.repository }}"

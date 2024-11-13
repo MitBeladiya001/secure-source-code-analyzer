@@ -1,0 +1,31 @@
+# config.yaml
+
+rules:
+  - name: "disallow_eval"
+    pattern: "eval"
+    severity: "critical"
+
+  - name: "disallow_exec"
+    pattern: "exec"
+    severity: "critical"
+
+whitelisted_functions:
+  - "safe_eval"
+
+blacklisted_functions:
+  - "exec"
+  - "eval"
+
+dependency_policies:
+  check_outdated: true
+  minimum_security_level: "high"
+  allow_pre_releases: false
+  disallowed_packages:
+    - "pycrypto"
+
+reporting:
+  output_format: "json"
+  verbosity: "high"
+  include_timestamp: true
+  critical_only: false
+  save_path: "./reports"
