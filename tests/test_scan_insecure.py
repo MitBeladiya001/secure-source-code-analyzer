@@ -1,24 +1,37 @@
 import unittest
+import os
 from core import scan_insecure
 
 class TestScanInsecure(unittest.TestCase):
     def setUp(self):
-        self.safe_code = "print('Hello, World!')"
-        self.insecure_code = "eval('print(42)')"
+        # Create example code files for testing
+        self.safe_code_path = "safe_code.py"
+        self.insecure_code_path = "insecure_code.py"
+
+        # Write safe code to safe_code.py (no security issues)
+        with open(self.safe_code_path, "w") as file:
+            file.write("print('Hello, World!')")
+
+        # Write insecure code to insecure_code.py (uses eval, which should be flagged)
+        with open(self.insecure_code_path, "w") as file:
+            file.write("eval('print(42)')")
+
+    def tearDown(self):
+        # Clean up the test files after running tests
+        if os.path.exists(self.safe_code_path):
+            os.remove(self.safe_code_path)
+        if os.path.exists(self.insecure_code_path):
+            os.remove(self.insecure_code_path)
 
     def test_safe_code(self):
-        # Check that safe code does not produce security warnings
-        with open("safe_code.py", "w") as file:
-            file.write(self.safe_code)
-        results = scan_insecure.run_bandit_scan("safe_code.py")
-        self.assertEqual(len(results), 0)
+        """Test that safe code does not produce any security warnings."""
+        results = scan_insecure.run_bandit_scan(self.safe_code_path)
+        self.assertEqual(len(results), 0, "Safe code should not produce security warnings.")
 
     def test_insecure_code(self):
-        # Check that insecure code produces security warnings
-        with open("insecure_code.py", "w") as file:
-            file.write(self.insecure_code)
-        results = scan_insecure.run_bandit_scan("insecure_code.py")
-        self.assertGreater(len(results), 0)
+        """Test that insecure code produces security warnings."""
+        results = scan_insecure.run_bandit_scan(self.insecure_code_path)
+        self.assertGreater(len(results), 0, "Insecure code should produce security warnings.")
 
 if __name__ == "__main__":
     unittest.main()

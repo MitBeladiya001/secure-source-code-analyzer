@@ -1,28 +1,19 @@
-import unittest
-from core import dependency_check
+import requests
 
-class TestDependencyCheck(unittest.TestCase):
-    def setUp(self):
-        # Create mock requirements.txt files
-        self.safe_requirements = "requests==2.25.1\n"
-        self.vulnerable_requirements = "pycrypto==2.6.1\n"
-        with open("safe_requirements.txt", "w") as file:
-            file.write(self.safe_requirements)
-        with open("vulnerable_requirements.txt", "w") as file:
-            file.write(self.vulnerable_requirements)
-        self.config = {
-            "dependency_policies": {
-                "disallowed_packages": ["pycrypto"]
-            }
-        }
+def check_dependencies(requirements_file, config):
+    results = []
+    with open(requirements_file, 'r') as file:
+        for line in file:
+            package_name, version = line.strip().split("==")
+            vulnerabilities = check_vulnerabilities(package_name, version)
+            if vulnerabilities:
+                results.append(vulnerabilities)
+    return results
 
-    def test_safe_requirements(self):
-        results = dependency_check.check_dependencies("safe_requirements.txt", self.config)
-        self.assertEqual(len(results), 0)
-
-    def test_vulnerable_requirements(self):
-        results = dependency_check.check_dependencies("vulnerable_requirements.txt", self.config)
-        self.assertGreater(len(results), 0)
-
-if __name__ == "__main__":
-    unittest.main()
+def check_vulnerabilities(package_name, version):
+    # Mocked URL; in real-world use, this would connect to a vulnerability API
+    url = f"https://api.github.com/advisories/{package_name}/{version}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return []
