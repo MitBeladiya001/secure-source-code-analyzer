@@ -39,4 +39,4 @@ A Python-based security scanner for analyzing open-source repositories, designed
 To scan a GitHub repository:
 
 ```bash
-python scanner.py --repo https://github.com/<username>/<repo>
+python scanner.py --repo https://github.com/bvvard/secure-source-code-analyzer/
