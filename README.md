@@ -10,7 +10,7 @@ A production-grade, Python-based security scanner for analyzing open-source repo
 - **📦 Dependency Scanning**: Checks for outdated or vulnerable dependencies using GitHub's Advisory Database.
 - **⚙️ Configurable Security Policies**: Customize rules, whitelists, and blacklists to fit your organizational standards.
 - **📊 Comprehensive Reports**: Generates a JSON report with all flagged issues, categorized by severity.
-- **CI/CD Integration**: Includes a GitHub Action for automated scanning in CI/CD workflows.
+- **🔄 CI/CD Integration**: Includes a GitHub Action for automated scanning in CI/CD workflows.
 - **🐳 Docker Support**: Runs securely in an isolated environment via Docker, ideal for CI/CD pipelines.
 
 ---
