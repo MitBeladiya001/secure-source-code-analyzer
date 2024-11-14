@@ -216,11 +216,16 @@ This project is licensed under the MIT License. See the ```LICENSE``` file for m
 
 ---
 
-## ☕️ Support Me
+## ⭐️ Support & Contributions
 
-If you find this project helpful, please consider supporting my work with a coffee! Your support helps me keep this project maintained and adds motivation to continue improving it. 💙
+If you find this project useful, please consider giving it a star ⭐️ to help others discover it! Contributions, issues, and feature requests are welcome. 
+
+Your support motivates me to keep improving this project. You can also support me directly:
 
 [![Buy Me a Coffee](https://img.shields.io/badge/-Buy%20Me%20a%20Coffee-orange?style=flat-square&logo=buy-me-a-coffee&logoColor=white&link=https://www.buymeacoffee.com/bvvard)](https://www.buymeacoffee.com/bvvard)
+
+Thank you for your support! 😊
+
 
 ---
 
