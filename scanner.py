@@ -2,6 +2,7 @@ import warnings
 import logging
 import click
 import os
+import time
 from core import clone_repo, detect_malicious, scan_insecure, dependency_check, policy_config, report
 
 # Suppress deprecation warnings
@@ -15,10 +16,20 @@ logging.basicConfig(
 )
 logger = logging.getLogger()
 
+# Helper function for loading bar
+def loading_bar(progress, total, length=30):
+    percent = int((progress / total) * 100)
+    bar = "#" * int((progress / total) * length)
+    return f"[{bar:<{length}}] {percent}%"
+
 @click.command()
 @click.option("--repo", prompt="GitHub repository URL", help="URL of the GitHub repository")
 def main(repo):
     """Secure Code Scanner CLI."""
+    print("🔍 Starting Secure Code Scanner...")
+    print("🌌 Patience, Padawan. Navigating the Security Force, we are...")  # Displayed immediately
+    print("🔄 Performing analysis...")
+
     try:
         # Load configuration
         config = policy_config.load_policy("config.yaml")
@@ -28,7 +39,7 @@ def main(repo):
         try:
             repo_dir = clone_repo.clone_repository(repo)
             if not repo_dir:
-                click.echo("Failed to clone repository.")
+                click.echo("❌ Failed to clone repository.")
                 logger.error("Repository cloning failed.")
                 return
             logger.info(f"Repository cloned to {repo_dir}.")
@@ -40,6 +51,11 @@ def main(repo):
         # Initialize result containers
         malicious_results = []
         insecure_results = []
+        dependency_results = None  # Explicitly set to None for easy check later
+
+        # Count files for loading bar
+        total_files = sum(1 for _, _, files in os.walk(repo_dir) for f in files if f.endswith('.py'))
+        scanned_files = 0
 
         # Scan each .py file in the repository
         try:
@@ -60,29 +76,48 @@ def main(repo):
                             insecure_results += scan_insecure.run_bandit_scan(file_path)
                         except Exception as e:
                             logger.error(f"Error in insecure code scanning for {file_path}: {e}")
+                        
+                        # Update progress
+                        scanned_files += 1
+                        print(loading_bar(scanned_files, total_files), end='\r')
+                        time.sleep(5)  # Optional: Simulate delay for loading effect
+
+            # Check for dependency file once after scanning
+            try:
+                dependency_results = dependency_check.check_dependencies(repo_dir, config)
+                if not dependency_results:  # Print only once if dependencies are empty
+                    print("⏭️ No requirements.txt found; skipping dependency check.")
+                logger.info("Dependency check completed.")
+            except Exception as e:
+                logger.error(f"Error during dependency checking: {e}")
+                click.echo(f"Error during dependency checking: {e}")
+                return
+            
+            print("✅ Scanning complete!")
+            
         except Exception as e:
             logger.error(f"Error during file scanning: {e}")
             click.echo(f"Error during file scanning: {e}")
             return
 
-        # Dependency check
-        try:
-            dependency_results = dependency_check.check_dependencies(repo_dir, config)
-            logger.info("Dependency check completed.")
-        except Exception as e:
-            logger.error(f"Error during dependency checking: {e}")
-            click.echo(f"Error during dependency checking: {e}")
-            return
-
-        # Generate report
+        # Generate report and determine final message
         try:
             results = {
                 "malicious": malicious_results,
                 "insecure": insecure_results,
-                "dependencies": dependency_results,
+                "dependencies": dependency_results or [],
             }
-            report.generate_report(results, config)
+            report_path = report.generate_report(results, config)
             logger.info("Report generated successfully.")
+
+            # Display final summary message in CLI
+            if results["malicious"]:
+                print("⚠️ WARNING: Malicious code detected! Please check the JSON report for details.")
+            elif not results["insecure"] and not results["dependencies"]:
+                print("🎉 SUCCESS: No security issues found! Your code is secure and ready for use.")
+            
+            # Only print the final report path with the emoji
+            print(f"📄 Report generated and saved to: {report_path}")
         except Exception as e:
             logger.error(f"Error during report generation: {e}")
             click.echo(f"Error during report generation: {e}")
