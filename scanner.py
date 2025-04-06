@@ -3,7 +3,9 @@ import logging
 import click
 import os
 import time
-from core import clone_repo, detect_malicious, scan_insecure, dependency_check, policy_config, report
+import argparse
+import sys
+from secure_source_code_analyzer.core import clone_repo, detect_malicious, scan_insecure, dependency_check, policy_config, report
 
 # Suppress deprecation warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)

@@ -1,5 +1,5 @@
 import unittest
-from core import detect_malicious
+from secure_source_code_analyzer.core import detect_malicious
 
 class TestDetectMalicious(unittest.TestCase):
     def setUp(self):

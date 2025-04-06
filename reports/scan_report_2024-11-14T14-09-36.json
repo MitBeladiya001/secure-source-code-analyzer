@@ -1,6 +1,0 @@
-{
-    "malicious": [],
-    "insecure": [],
-    "dependencies": [],
-    "success_message": "\ud83c\udf89 Congratulations! No malicious code, insecure practices, or vulnerable dependencies were found. Your code is secure!"
-}

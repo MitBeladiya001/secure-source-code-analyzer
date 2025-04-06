@@ -1,6 +1,6 @@
 import unittest
 import os
-from core import scan_insecure
+from secure_source_code_analyzer.core import scan_insecure
 
 class TestScanInsecure(unittest.TestCase):
     def setUp(self):

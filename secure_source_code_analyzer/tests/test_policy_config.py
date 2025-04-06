@@ -1,5 +1,5 @@
 import unittest
-from core import policy_config
+from secure_source_code_analyzer.core import policy_config
 
 class TestPolicyConfig(unittest.TestCase):
     def test_load_valid_policy(self):

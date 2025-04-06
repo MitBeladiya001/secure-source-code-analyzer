@@ -1,7 +1,7 @@
 import unittest
 import os
 from datetime import datetime
-from core import report
+from secure_source_code_analyzer.core import report
 
 class TestReport(unittest.TestCase):
     def setUp(self):

@@ -1,0 +1,12 @@
+{
+    "malicious": [
+        "Suspicious eval in file.py"
+    ],
+    "insecure": [
+        "Hardcoded secret in config.py"
+    ],
+    "dependencies": [
+        "Vulnerable package found"
+    ],
+    "message": "\u26a0\ufe0f WARNING: Malicious code detected! Please review the findings and address potential security issues in your code to ensure safety."
+}

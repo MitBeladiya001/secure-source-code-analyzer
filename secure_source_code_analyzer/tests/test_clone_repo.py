@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
-from core import clone_repo
+from secure_source_code_analyzer.core import clone_repo
 
 class TestCloneRepo(unittest.TestCase):
-    @patch('core.clone_repo.git.Repo.clone_from')
+    @patch('secure_source_code_analyzer.core.clone_repo.git.Repo.clone_from')
     def test_clone_repository_failure(self, mock_clone_from):
         # Mock a failure in git.Repo.clone_from to raise an exception
         mock_clone_from.side_effect = Exception("Cloning failed")
